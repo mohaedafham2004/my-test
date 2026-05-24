@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Install ALL dependencies (devDeps needed for tsc)
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 # Copy source
 COPY tsconfig.json ./
@@ -36,7 +36,7 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 
 # Install production dependencies only
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 # Copy compiled output AFTER npm ci (so npm doesn't overwrite dist/)
 COPY --from=builder /app/dist ./dist
