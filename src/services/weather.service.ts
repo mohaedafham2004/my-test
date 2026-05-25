@@ -6,7 +6,7 @@ import * as activityService from './activity.service';
 import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
 import { OWMCurrentWeatherResponse, WeatherResult } from '../types/weather.types';
-import { Location } from '@prisma/client';
+import { Location } from '../generated/client';
 
 const owmClient = axios.create({
   baseURL: config.owmBaseUrl,

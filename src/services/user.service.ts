@@ -1,7 +1,7 @@
 import * as userModel from '../models/user.model';
 import { AppError } from '../utils/AppError';
 import { UpdateUserDto } from '../types/common.types';
-import { Role } from '@prisma/client';
+import { Role } from '../generated/client';
 
 export async function getMe(userId: string) {
   const user = await userModel.findUserById(userId);

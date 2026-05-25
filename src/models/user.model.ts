@@ -1,5 +1,5 @@
 import prisma from '../utils/prisma';
-import { Role } from '@prisma/client';
+import { Role } from '../generated/client';
 import { RegisterDto, UpdateUserDto } from '../types/common.types';
 
 export const findUserById = (id: string) =>

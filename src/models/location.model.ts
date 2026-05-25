@@ -1,5 +1,5 @@
 import prisma from '../utils/prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../generated/client';
 import { CreateLocationDto, LocationFilters } from '../types/common.types';
 
 export const findLocationById = (id: string) =>
