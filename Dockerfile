@@ -1,5 +1,5 @@
 # ─── Stage 1: Build ───────────────────────────────────────────────────────────
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Prisma schema engine requires OpenSSL
 RUN apk add --no-cache openssl
@@ -25,7 +25,7 @@ RUN npm run build
 RUN ls -la dist/
 
 # ─── Stage 2: Run ─────────────────────────────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 
 # Prisma client requires OpenSSL at runtime
 RUN apk add --no-cache openssl
