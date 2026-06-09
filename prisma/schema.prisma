@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+}
+
+// ─────────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────────
+
+model User {
+  id         String     @id @default(uuid())
+  user_name  String
+  phone      String
+  email      String?    @unique
+  password   String?
+  role       Role       @default(CUSTOMER)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  is_deleted Boolean    @default(false)
+
+  activities Activity[]
+  opinions   Opinion[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────
+// LOCATION
+// ─────────────────────────────────────────────
+
+model Location {
+  id           String    @id @default(uuid())
+  place_name   String?
+  special_name String?
+  town         String?
+  district     String?
+  province     String?
+  latitude     Float?
+  longitude    Float?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  is_deleted   Boolean   @default(false)
+
+  opinions Opinion[]
+
+  @@map("locations")
+}
+
+// ─────────────────────────────────────────────
+// ACTIVITY (Search History)
+// ─────────────────────────────────────────────
+
+model Activity {
+  id             String   @id @default(uuid())
+  user_id        String
+  search_history Json?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  is_deleted     Boolean  @default(false)
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("activities")
+}
+
+// ─────────────────────────────────────────────
+// OPINION (User Preferences per Location)
+// ─────────────────────────────────────────────
+
+model Opinion {
+  id             String    @id @default(uuid())
+  user_id        String
+  location_id    String
+  favourite      Boolean   @default(false)
+  saved          Boolean   @default(false)
+  previous_visit DateTime?
+  future_visit   DateTime?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+
+  user     User     @relation(fields: [user_id], references: [id])
+  location Location @relation(fields: [location_id], references: [id])
+
+  @@unique([user_id, location_id])
+  @@map("opinions")
+}
