@@ -18,11 +18,18 @@ COPY prisma ./prisma
 # Generate Prisma client (Linux binary)
 RUN npx prisma generate
 
-# Compile TypeScript → ./dist
+# Show files before build
+RUN echo "=== ROOT FILES ===" && ls -la
+RUN echo "=== SRC FILES ===" && find src -type f
+
+# Compile TypeScript
 RUN npm run build
 
-# Verify build output exists
-RUN ls -la dist/
+# Show result after build
+RUN echo "=== AFTER BUILD ==="
+RUN find . -type d | sort
+RUN ls -la
+RUN ls -la dist || true
 
 # ─── Stage 2: Run ─────────────────────────────────────────────────────────────
 FROM node:24-alpine AS runner
